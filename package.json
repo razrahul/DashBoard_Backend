@@ -1,0 +1,21 @@
+{
+  "name": "dashbackend",
+  "version": "1.0.0",
+  "description": "DashBoard Backend For Techtime",
+  "main": "app.js",
+  "scripts": {
+    "test": "npm run dev"
+  },
+  "keywords": [
+    "Backend"
+  ],
+  "author": "razrahul",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}

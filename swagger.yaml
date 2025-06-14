@@ -1,0 +1,436 @@
+openapi: 3.0.0
+info:
+  title: CMS - Contact User Dashboard API
+  description: |
+    This is the backend API for the **Contact User Dashboard (CMS)**, designed to manage user contact submissions, feedback, vacancies, and FAQs efficiently.
+
+    The API provides endpoints for form submissions, data retrieval, status updates, and overall dashboard management.
+
+     We encourage contributions to improve and extend the API. Feel free to explore, suggest changes, or enhance the features.
+    
+    Some useful links:
+    - [Backend Repository](https://github.com/razrahul/CMS_Backend)
+    
+    - [Frontend UI(netlify)](https://contact-fromdata.netlify.app)
+    - [Frontend UI(render)](https://client-frontend-juzp.onrender.com)
+    
+  termsOfService: http://swagger.io/terms/
+  contact:
+    name: Rahul Kumar
+    email: razrahuleee@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+
+servers:
+  - url: https://cms-backend-uq80.onrender.com/api/v1
+    description: stgae Server
+  - url: http://localhost:5000/api/v1
+    description: Local Development Server
+
+components:
+  securitySchemes:
+    noauthAuth:
+      type: http
+      scheme: noauth
+    bearerAuth:
+      type: http
+      scheme: bearer
+tags:
+  - name: conatct
+  - name: auth
+  - name: chat
+  - name: admin
+  - name: stats
+paths:
+  /contact/create:
+    post:
+      tags:
+        - conatct
+      summary: create contact
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: Rajan Kumar
+                email: rajan@gmail.com
+                phone: '9708712422'
+                nationlity: Indian
+                createdBy: 1
+      security:
+        - noauthAuth: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /contact:
+    get:
+      tags:
+        - conatct
+      summary: featch all contact
+      security:
+        - noauthAuth: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /contact/latest:
+    get:
+      tags:
+        - conatct
+      summary: latest 5 conatct
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /contact/status/{id}:
+    put:
+      tags:
+        - conatct
+      summary: status change
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                status: complete
+      security:
+        - noauthAuth: []
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 07265fb6-7c4d-4e98-9d2d-84cba2f508a0
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /contact/activity/{id}:
+    put:
+      tags:
+        - conatct
+      summary: change activity
+      requestBody:
+        content: {}
+      security:
+        - noauthAuth: []
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 07265fb6-7c4d-4e98-9d2d-84cba2f508a0
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /contact/call/{id}:
+    put:
+      tags:
+        - conatct
+      summary: make a call
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                date: '2025-05-30'
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 07265fb6-7c4d-4e98-9d2d-84cba2f508a0
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /auth/verify-account/{token}:
+    get:
+      tags:
+        - auth
+      summary: User Account verification
+      security:
+        - noauthAuth: []
+      parameters:
+        - name: token
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 42ce6499-fca4-4c59-a837-c546f763be32
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /auth/login:
+    post:
+      tags:
+        - auth
+      summary: login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                email: rahulkumar852145@gmail.com
+                password: Test@12345
+                rememberPassword: true
+      security:
+        - noauthAuth: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /auth/register:
+    post:
+      tags:
+        - auth
+      summary: user register
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                firstName: Rahul
+                lastName: Kumar
+                email: rahulkumar852145@gmail.com
+                password: Test@12345
+                phone: '9708712422'
+                dob: '2020-01-20'
+                roleId: b287299d-1698-11f0-bf71-ab5ed40ec6b9
+                company: 1d00eb73-169b-11f0-bf71-ab5ed40ec6b9
+                createdBy: 1
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /auth/users:
+    get:
+      tags:
+        - auth
+      summary: featch all users
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /auth/verifation/{id}:
+    put:
+      tags:
+        - auth
+      summary: Activity change ( verification)
+      requestBody:
+        content: {}
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 33dbfd4b-b593-40ee-88b4-9baa5a5ad989
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /chat/create/{id}:
+    post:
+      tags:
+        - chat
+      summary: create chat
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                request: this is test message
+                createdBy: 1
+      security:
+        - noauthAuth: []
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 75e36ff6-2641-4205-a956-5e16a8997d67
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /chat/reply/{id}:
+    post:
+      tags:
+        - chat
+      summary: reply send
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                message: teat for reply6 send
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 45dc290d-5d09-46a2-b30c-b24d64ff06e9
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /chat/activity/{id}:
+    put:
+      tags:
+        - chat
+      summary: Activity Change
+      requestBody:
+        content: {}
+      security:
+        - noauthAuth: []
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: cbc1cb44-fb29-47ac-8b7a-72b95c439cdc
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /admin/roles:
+    get:
+      tags:
+        - admin
+      summary: get All Roles
+      security:
+        - noauthAuth: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /admin/roles-active:
+    get:
+      tags:
+        - admin
+      summary: get All Active Roles
+      security:
+        - noauthAuth: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /admin/companies-active:
+    get:
+      tags:
+        - admin
+      summary: get All Active companies
+      security:
+        - noauthAuth: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /admin/companies:
+    get:
+      tags:
+        - admin
+      summary: get All companies
+      security:
+        - noauthAuth: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /stats/visit:
+    post:
+      tags:
+        - stats
+      summary: create visitor
+      requestBody:
+        content: {}
+      security:
+        - noauthAuth: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /stats/today:
+    get:
+      tags:
+        - stats
+      summary: today stats
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /stats/all:
+    get:
+      tags:
+        - stats
+      summary: all stats
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /stats/week:
+    get:
+      tags:
+        - stats
+      summary: week stats
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
