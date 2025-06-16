@@ -1,3 +1,8 @@
+// a/c to env changes the database connection
+require("dotenv").config({
+  path: `.env.${process.env.NODE_ENV || "development"}`,
+});
+
 
 module.exports = {
   development: {
