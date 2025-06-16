@@ -30,8 +30,3 @@ module.exports = {
   },
 };
 
-module.exports = { tableSync };
-
-// await Chats.sync({ alter: true }); 
-
-// wait Chats.sync({ force: true });
