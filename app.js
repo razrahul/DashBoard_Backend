@@ -4,12 +4,7 @@ const express = require("express");
 const cors = require("cors");
 const sequelize = require("./src/config/dbConnect");
 const indexRouter = require("./src/routes/index");
-
 const { tableSync } = require("./src/utils/commonMethod");
-
-
-
-
 
 require("dotenv").config({
   path: `.env.${process.env.NODE_ENV || "development"}`,
@@ -76,9 +71,7 @@ app.listen(PORT, async () => {
     //db connection check
     await sequelize.authenticate();
     console.log("Database Connection has been established successfully.");
-
     await tableSync();
-
   } catch (error) {
     console.log("Error", error.message);
   }
