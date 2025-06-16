@@ -4,7 +4,10 @@
   "description": "DashBoard Backend For Techtime",
   "main": "app.js",
   "scripts": {
-    "test": "npm run dev"
+    "test": "npm run dev",
+    "start:dev": "cross-env NODE_ENV=development nodemon app.js",
+    "start:stage": "cross-env NODE_ENV=staging nodemon app.js",
+    "start:prod": "cross-env NODE_ENV=production node app.js"
   },
   "keywords": [
     "Backend"
@@ -13,9 +16,15 @@
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^5.1.0"
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "mysql2": "^3.14.1",
+    "sequelize": "^6.37.7",
+    "swagger-ui-express": "^5.0.1",
+    "yaml": "^2.8.0"
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "nodemon": "^3.1.10"
   }
 }
