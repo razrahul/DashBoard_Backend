@@ -19,7 +19,9 @@ module.exports = {
     host: process.env.DB_HOST,
     // port: process.env.DB_PORT,
     dialect: "mysql",
+
     log: console.log,
+
   },
   production: {
     username: process.env.DB_USER,
