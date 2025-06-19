@@ -9,24 +9,11 @@ const {
 // Download the helper library from https://www.twilio.com/docs/node/install
 const twilio = require("twilio"); // Or, for ESM: import twilio from "twilio";
 
-// Find your Account SID and Auth Token at twilio.com/console
-// and set the environment variables. See http://twil.io/secure
+
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const twilioPhoneNumber = process.env.TWILIO_PHONE_NUMBER;
 const client = twilio(accountSid, authToken);
-
-// async function createMessage() {
-//   const message = await client.messages.create({
-//     body: "This is the ship that made the Kessel Run in fourteen parsecs?",
-//     from: "+15017122661",
-//     to: "+15558675310",
-//   });
-
-//   console.log(message.body);
-// }
-
-// createMessage();
 
 const sendOtpPhone = async (phoneNumber, otp) => {
   try {
@@ -39,14 +26,40 @@ const sendOtpPhone = async (phoneNumber, otp) => {
       from: twilioPhoneNumber,
       to: `+91${phoneNumber}`,
     });
-    // console.log("@@@@message", message);
 
-    // console.log(`OTP sent to ${phoneNumber}: ${message}`);
     return message.body;
   } catch (error) {
-    console.error(`Error sending OTP to ${phoneNumber}: ${error.message}`);
-    throw error;
+    throw new Error(error.message);
   }
 };
 
-module.exports = { sendOtpPhone };
+
+const sgMail = require('@sendgrid/mail');
+
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+const sendOtpEmail = async (email, otp) => {
+  try {
+    if (!email) {
+      throw new Error(ERROR_MESSAGE.EMAIL_REQUIRED || "Email is required");
+    }
+
+    const msg = {
+      to: email, // user email
+      from: process.env.SENDGRID_VERIFIED_EMAIL, // verified email
+      subject: 'Your OTP Code',
+      text: `Your OTP is: ${otp}`,
+      html: `<p><strong>Your OTP is:</strong> ${otp}</p>`,
+    };
+
+    const response = await sgMail.send(msg);
+    return response;
+    
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+
+
+module.exports = { sendOtpPhone, sendOtpEmail };

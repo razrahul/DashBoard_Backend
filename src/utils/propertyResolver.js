@@ -9,7 +9,11 @@ exports.ERROR_MESSAGE = {
     INVALID_OTP: "Invalid Otp",
     USER_ALREADY:"User already registered",
     PHONE_NO_REQ:"Phone number is required",
-    PHONE_OTP_REQ:"Phone and OTP required",
+    PHONE_OTP_REQ:"Phone, Email and both OTPs are required.",
+    EMAIL_REQUIRED: "Email is required",
+    PHONE_EMAIL_REQ:"Phone and Email are required.",
+    PHONE_ALREADY_EXISTS: "Phone number is already registered.",
+    EMAIL_ALREADY_EXISTS: "Email is already registered.",
     
     
 
