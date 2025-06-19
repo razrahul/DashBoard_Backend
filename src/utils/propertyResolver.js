@@ -14,6 +14,8 @@ exports.ERROR_MESSAGE = {
     PHONE_EMAIL_REQ:"Phone and Email are required.",
     PHONE_ALREADY_EXISTS: "Phone number is already registered.",
     EMAIL_ALREADY_EXISTS: "Email is already registered.",
+
+    PHONE_OTP_REQ:"Phone and OTP required",
     
     
 
