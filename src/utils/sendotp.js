@@ -9,11 +9,11 @@ const {
 // Download the helper library from https://www.twilio.com/docs/node/install
 const twilio = require("twilio"); // Or, for ESM: import twilio from "twilio";
 
-
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const twilioPhoneNumber = process.env.TWILIO_PHONE_NUMBER;
 const client = twilio(accountSid, authToken);
+
 
 const sendOtpPhone = async (phoneNumber, otp) => {
   try {
@@ -63,3 +63,4 @@ const sendOtpEmail = async (email, otp) => {
 
 
 module.exports = { sendOtpPhone, sendOtpEmail };
+

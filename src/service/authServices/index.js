@@ -21,4 +21,5 @@ const createAuthUser = async ({ phone, email }) => {
 };
 
 
+
 module.exports = { createAuthUser };

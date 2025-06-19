@@ -38,5 +38,3 @@ const verifyOtp = (identifier, inputOtp, type) => {
 
 module.exports = { generateOtp, verifyOtp };
 
-
-
