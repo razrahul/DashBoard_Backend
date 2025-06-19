@@ -7,7 +7,7 @@ const Auths = sequelize.define(
   {
     email: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
       unique: true,
       trim: true,
       validate: {
@@ -18,9 +18,9 @@ const Auths = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
       trim: true,
-      validate: {
-        is: /^[0-9]{10}$/, // Example: 10-digit numeric phone number
-      },
+      // validate: {
+      //   is: /^[0-9]{10}$/, // Example: 10-digit numeric phone number
+      // },
     },
 
     pan: {
@@ -31,6 +31,7 @@ const Auths = sequelize.define(
     },
     otp: {
       type: DataTypes.STRING,
+      allowNull: true,
       trim: true,
     },
 
