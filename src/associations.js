@@ -13,8 +13,8 @@ const Leads = require("./models/Leads");
 // -------------------- Associations --------------------
 
 // 🔗 User → Role (Many Users belong to One Role)
-User.belongsTo(Role, { foreignKey: "roleId" });
-Role.hasMany(User, { foreignKey: "roleId" });
+User.belongsTo(Role, { foreignKey: "roleId",targetKey: "uuId", as: "role" });
+Role.hasMany(User, { foreignKey: "roleId", sourceKey: "uuId",  as: "user"  });
 
 // 🔗 User → Account (One User has One Account)
 User.hasOne(Account, { foreignKey: "memberId", sourceKey: "memberId" });

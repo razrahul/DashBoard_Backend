@@ -1,5 +1,6 @@
 const express = require('express')
 const authRouter = require('./auth')
+const roleRouter = require('./role')
 
 
 
@@ -7,6 +8,7 @@ const authRouter = require('./auth')
 
 const indexRouter = express.Router();
 indexRouter.use('/auth', authRouter);
+indexRouter.use('/role', roleRouter);
 
 
 
