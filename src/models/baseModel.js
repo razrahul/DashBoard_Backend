@@ -28,11 +28,11 @@ const BaseModel = sequelize.define(
       defaultValue: false,
     },
   },
-  {
-    timestamps: true, // ✅ Automatically adds createdAt & updatedAt
-    paranoid: true, // ✅ Enables soft delete with deletedAt column
-    freezeTableName: true, // ✅ Prevents Sequelize from pluralizing table name
-  }
+  // {
+  //   timestamps: true, // ✅ Automatically adds createdAt & updatedAt
+  //   paranoid: true, // ✅ Enables soft delete with deletedAt column
+  //   freezeTableName: true, // ✅ Prevents Sequelize from pluralizing table name
+  // }
 );
 
 module.exports = BaseModel;
