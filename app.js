@@ -5,6 +5,7 @@ const cors = require("cors");
 const sequelize = require("./src/config/dbConnect");
 const indexRouter = require("./src/routes/index");
 const { tableSync } = require("./src/utils/commonMethod");
+require("./src/associations");
 
 require("dotenv").config({
   path: `.env.${process.env.NODE_ENV || "development"}`,

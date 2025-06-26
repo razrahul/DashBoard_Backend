@@ -1,14 +1,14 @@
-const User = require("./user");
-const Role = require("./role");
-const Transaction = require("./transaction");
-const Plan = require("./plan");
-const Account = require("./account");
-const UserPlan = require("./userPlan");
-const Notification = require("./notification");
-const Ticket = require("./ticket");
-const Leads = require("./leads");
-const User = require("./user");
-const Plan = require("./plan");
+const User = require("./models/User");
+const Role = require("./models/Role");
+const Transaction = require("./models/Transaction");
+const Plan = require("./models/Plan");
+const Account = require("./models/Account");
+const UserPlan = require("./models/UserPlan");
+const Notification = require("./models/Notification");
+const Ticket = require("./models/Ticket");
+const Leads = require("./models/Leads");
+// const User = require("./user");
+// const Plan = require("./plan");
 
 // -------------------- Associations --------------------
 

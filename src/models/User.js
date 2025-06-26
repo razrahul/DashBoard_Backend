@@ -1,6 +1,7 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/dbConnect");
 const BaseModel = require("./baseModel");
+const Role = require("./Role");
 const { encrypt, decrypt } = require("../utils/encryption");
 
 const User = sequelize.define(
@@ -27,8 +28,12 @@ const User = sequelize.define(
       },
     },
     roleId: {
-      type: DataTypes.BIGINT,
-      allowNull: false,
+      type: DataTypes.UUID,
+      references: {
+        model: Role,
+        key: "uuId",
+      },
+      allowNull: true,
     },
     otp: {
       type: DataTypes.STRING,
@@ -59,6 +64,7 @@ const User = sequelize.define(
     },
     memberId: {
       type: DataTypes.STRING,
+      unique: true,
       allowNull: true,
     },
     address: {
@@ -74,5 +80,24 @@ const User = sequelize.define(
     freezeTableName: true,
   }
 );
+
+// Hook to generate memberId before creation
+User.beforeCreate(async (user, options) => {
+  const firstInitial = user.firstName?.charAt(0).toUpperCase() || '';
+  const lastInitial = user.lastName?.charAt(0).toUpperCase() || '';
+
+  const initials = `${firstInitial}${lastInitial}`;
+
+  const count = await User.count({
+    where: {
+      memberId: {
+        [sequelize.Op.like]: `${initials}%`,
+      },
+    },
+  });
+
+  const memberNumber = String(count + 1).padStart(3, '0'); 
+  user.memberId = `${initials}${memberNumber}`;
+});
 
 module.exports = User;
