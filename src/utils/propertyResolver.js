@@ -14,6 +14,10 @@ exports.ERROR_MESSAGE = {
     PHONE_EMAIL_REQ:"Phone and Email are required.",
     PHONE_ALREADY_EXISTS: "Phone number is already registered.",
     EMAIL_ALREADY_EXISTS: "Email is already registered.",
+    ROLE_ALREADY_EXISTS: "Role already exists",
+    ROLE_NOT_FOUND: "Role not found",
+    ROLE_ID_REQUIRED: "Role ID is required",
+    ROLE_NAME_REQUIRED: "Role name is required",
 
     
     
@@ -27,7 +31,10 @@ exports.SUCCESS_MESSAGE = {
     OTP_VERIFIED_SUCCESSFULLY: 'OTP verified successfully',
     USER_LOGGED_IN_SUCCESSFULLY: 'User logged in successfully',
     OTP_SUCESS:"OTP sent successfully",
-    SIGNUP_SUCESS:"Signup successful"
-    
+    SIGNUP_SUCESS:"Signup successful",
+    ROLE_CREATED: "Role created successfully",
+    ROLE_UPDATED: "Role updated successfully",
+    ROLE_DELETED: "Role deleted successfully",
+    ROLE_FETCHED: "Roles fetched successfully",
 
 };
