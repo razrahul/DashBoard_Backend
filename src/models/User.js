@@ -1,4 +1,4 @@
-const { DataTypes } = require("sequelize");
+const { DataTypes, Op } = require("sequelize");
 const sequelize = require("../config/dbConnect");
 const BaseModel = require("./baseModel");
 const Role = require("./Role");
@@ -9,20 +9,22 @@ const User = sequelize.define(
   {
     firstName: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     lastName: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     number: {
       type: DataTypes.STRING,
       allowNull: false,
+      trim: true,
     },
     email: {
       type: DataTypes.STRING,
       allowNull: true,
       unique: true,
+      trim: true,
       validate: {
         isEmail: true,
       },
@@ -81,23 +83,30 @@ const User = sequelize.define(
   }
 );
 
-// Hook to generate memberId before creation
+// auto generate memberId based on first and last name initials
+// e.g. John Doe -> JD001, Jane Smith -> JS001
+
+// Generate memberId only when firstName and lastName are present AND memberId is not yet set
 User.beforeCreate(async (user, options) => {
-  const firstInitial = user.firstName?.charAt(0).toUpperCase() || '';
-  const lastInitial = user.lastName?.charAt(0).toUpperCase() || '';
+  if (!user.memberId && user.firstName && user.lastName) {
+    const firstInitial = user.firstName.charAt(0).toUpperCase();
+    const lastInitial = user.lastName.charAt(0).toUpperCase();
 
-  const initials = `${firstInitial}${lastInitial}`;
+    const initials = `${firstInitial}${lastInitial}`;
 
-  const count = await User.count({
-    where: {
-      memberId: {
-        [sequelize.Op.like]: `${initials}%`,
+    const count = await User.count({
+      where: {
+        memberId: {
+          [Op.like]: `${initials}%`,
+        },
       },
-    },
-  });
+    });
 
-  const memberNumber = String(count + 1).padStart(3, '0'); 
-  user.memberId = `${initials}${memberNumber}`;
+    const memberNumber = String(count + 1).padStart(3, "0");
+    user.memberId = `${initials}${memberNumber}`;
+  }
 });
+
+
 
 module.exports = User;

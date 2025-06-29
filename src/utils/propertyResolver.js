@@ -18,6 +18,8 @@ exports.ERROR_MESSAGE = {
     ROLE_NOT_FOUND: "Role not found",
     ROLE_ID_REQUIRED: "Role ID is required",
     ROLE_NAME_REQUIRED: "Role name is required",
+    USER_ALREADY_EXISTS: "User already exists",
+    USER_NOT_FOUND: "User not found",
 
     
     
