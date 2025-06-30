@@ -5,6 +5,11 @@ const BaseModel = require("./baseModel");
 const Role = sequelize.define(
   "Role",
   {
+    id: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      unique: true,
+    },
     roleName: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -18,5 +23,14 @@ const Role = sequelize.define(
     freezeTableName: true,
   }
 );
+
+// ✅ Custom auto-increment logic
+Role.beforeCreate(async (instance) => {
+  if (!instance.id) {
+    const max = await Role.max("id") || 0;
+    instance.id = max + 1;
+  }
+});
+
 
 module.exports = Role;

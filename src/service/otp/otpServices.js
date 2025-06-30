@@ -36,5 +36,15 @@ const verifyOtp = (identifier, inputOtp, type) => {
   return true;
 };
 
-module.exports = { generateOtp, verifyOtp };
+const loginOtpGenerate =  () => {
+  const otp = otpGenerator.generate(6, {
+    upperCaseAlphabets: false,
+    lowerCaseAlphabets: false,
+    specialChars: false,
+    digits: true,
+  });
+  return otp;
+};
+
+module.exports = { generateOtp, verifyOtp, loginOtpGenerate };
 
