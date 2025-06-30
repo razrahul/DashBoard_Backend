@@ -7,6 +7,11 @@ const { encrypt, decrypt } = require("../utils/encryption");
 const User = sequelize.define(
   "User",
   {
+    id: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      unique: true,
+    },
     firstName: {
       type: DataTypes.STRING,
       allowNull: true,
@@ -88,6 +93,12 @@ const User = sequelize.define(
 
 // Generate memberId only when firstName and lastName are present AND memberId is not yet set
 User.beforeCreate(async (user, options) => {
+  // Check if id is not set
+  if (!user.id) {
+    const max = await User.max("id") || 0;
+    user.id = max + 1;
+  }
+  // Check if memberId is not set and both firstName and lastName are provided
   if (!user.memberId && user.firstName && user.lastName) {
     const firstInitial = user.firstName.charAt(0).toUpperCase();
     const lastInitial = user.lastName.charAt(0).toUpperCase();

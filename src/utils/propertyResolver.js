@@ -20,6 +20,9 @@ exports.ERROR_MESSAGE = {
     ROLE_NAME_REQUIRED: "Role name is required",
     USER_ALREADY_EXISTS: "User already exists",
     USER_NOT_FOUND: "User not found",
+    PLAN_ALREADY_EXISTS: "Plan already exists",
+    PLAN_NOT_FOUND: "Plan not found",
+    INVALID_CREDENTIALS: "Invalid credentials",
 
     
     
@@ -38,5 +41,10 @@ exports.SUCCESS_MESSAGE = {
     ROLE_UPDATED: "Role updated successfully",
     ROLE_DELETED: "Role deleted successfully",
     ROLE_FETCHED: "Roles fetched successfully",
+    PLAN_CREATED_SUCCESSFULLY: "Plan created successfully",
+    PLANS_FETCHED_SUCCESSFULLY: "All Plans fetched successfully",
+    PLAN_FETCHED_SUCCESSFULLY: "Plan fetched successfully",
+    PLAN_UPDATED_SUCCESSFULLY: "Plan updated successfully",
+    PLAN_DELETED_SUCCESSFULLY: "Plan deleted successfully",
 
 };
