@@ -8,4 +8,10 @@ router.get("/test", test);
 router.post("/request-otp", userController.requestOtp);
 router.post("/verify-otp", userController.verifyOtpAndSignup);
 
+// login request-otp
+router.post("/login-request-otp", userController.loginOtpRequest);
+
+// login verify-otp
+router.post("/login", userController.loginOtpVerify);
+
 module.exports = router;

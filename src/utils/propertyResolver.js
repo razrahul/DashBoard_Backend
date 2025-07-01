@@ -20,9 +20,12 @@ exports.ERROR_MESSAGE = {
     ROLE_NAME_REQUIRED: "Role name is required",
     USER_ALREADY_EXISTS: "User already exists",
     USER_NOT_FOUND: "User not found",
+<<<<<<< HEAD
     PLAN_ALREADY_EXISTS: "Plan already exists",
     PLAN_NOT_FOUND: "Plan not found",
     INVALID_CREDENTIALS: "Invalid credentials",
+=======
+>>>>>>> 770a43c158a2739f3290f38f414c2382c7bf632d
 
     
     

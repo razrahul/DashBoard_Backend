@@ -5,7 +5,8 @@ const {
 
 const User = require('../../models/User');
 
-
+ const { Op } = require('sequelize');
+ const jwt = require('jsonwebtoken');
 
 const createUser = async ({ phone, email }) => {
   try {
@@ -66,20 +67,23 @@ const otpStore =  async ({phoneoremail, otp}) => {
 
 const loginverify = async ({ phoneoremail, otp }) => {
   try {
+    // console.log("@@@sevices:", phoneoremail, "OTP:", otp);
+    
     const user = await User.findOne({
       where: {
         [Op.or]: [
           { number: phoneoremail },
           { email: phoneoremail }
         ]
-      }
+      },
+      attributes: { exclude: ['isActive'] }
     });
 
     if (!user) {
       throw new Error(ERROR_MESSAGE.USER_NOT_FOUND || "User not found");
     }
 
-    if (user.otp !== otp) {
+    if (String(user.otp) !== String(otp).trim()) {
       throw new Error(ERROR_MESSAGE.INVALID_OTP || "Invalid OTP");
     }
 
@@ -87,7 +91,23 @@ const loginverify = async ({ phoneoremail, otp }) => {
     user.otp = null;
     await user.save();
 
-    return user;
+     //Generate a JWT token or session for the user if needed
+    const tokenExpires = "1d"; // Example expiration time
+    const token = jwt.sign(
+      {
+        userId: user.id,
+        uuId: user.uuId,
+        email: user.email,
+        role: user.roleId || null,
+        isActive: user.isActive || null,
+      },
+      process.env.JWT_SECRET,
+      { 
+        expiresIn: tokenExpires 
+      }
+    );
+
+    return {user, token};
 
   } catch (error) {
     throw new Error(error.message || "Failed to verify OTP");

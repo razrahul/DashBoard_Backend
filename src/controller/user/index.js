@@ -79,27 +79,39 @@ const loginOtpRequest = async (req, res) => {
       throw new Error(ERROR_MESSAGE.PHONE_EMAIL_REQ || "Phone or Email is required.");
     }
 
-    if (phoneoremail && !validator.isMobilePhone(phoneoremail, 'any')) {
-      throw new Error(ERROR_MESSAGE.INVALID_PHONE || "Invalid phone number format.");
-    }
-    if (phoneoremail && !validator.isEmail(phoneoremail)) {
-      throw new Error(ERROR_MESSAGE.INVALID_EMAIL || "Invalid email format.");
-    }
+    // if (phoneoremail && !validator.isMobilePhone(phoneoremail, 'any')) {
+    //   throw new Error(ERROR_MESSAGE.INVALID_PHONE || "Invalid phone number format.");
+    // }
+    // if (phoneoremail && !validator.isEmail(phoneoremail)) {
+    //   throw new Error(ERROR_MESSAGE.INVALID_EMAIL || "Invalid email format.");
+    // }
 
     // Generate OTP for phone or email
     const otp = await loginOtpGenerate();
 
+
+    // Store OTP in database
+    await userService.otpStore({ phoneoremail, otp });
+
+
     // Send OTP based on type
     if (validator.isMobilePhone(phoneoremail, 'any')) {
       await sendOtpPhone(phoneoremail, otp); // Twilio
+      // console.log("OTP sent to phone:", phoneoremail, otp);
+      
     }else if (validator.isEmail(phoneoremail)) {
-      await sendOtpEmail(phoneoremail, otp); // SendGrid
+      const email = phoneoremail.trim();
+      // TODO: Cheack let otp on email
+      // await sendOtpEmail(email, otp); // SendGrid
+      const response = await sendOtpEmail(email, otp);
+      // console.log("SendGrid Response:", response);
+      // console.log("OTP sent to email:", email, otp);
+      
+    }else {
+      throw new Error(ERROR_MESSAGE.INVALID_PHONE || "Invalid phone or email format.");
     }
 
-    // Store OTP in database
-    userService.otpStore({ phoneoremail, otp });
-
-    sendSuccessResponse(res, SUCCESS_MESSAGE.OTP_SENT, "", 200);
+    sendSuccessResponse(res, SUCCESS_MESSAGE.OTP_SUCESS, "", 200);
   } catch (error) {
     sendErrorResponse(
       res,
@@ -118,7 +130,7 @@ const loginOtpVerify = async (req, res) => {
       throw new Error(ERROR_MESSAGE.PHONE_OTP_REQ || "Phone/Email and OTP are required.");
     }
 
-    const result = await userService.loginverify(phoneoremail, otp);
+    const result = await userService.loginverify({phoneoremail, otp});
   
     // Create user
     sendSuccessResponse(res, SUCCESS_MESSAGE.LOGIN_SUCCESS, result, 200);
