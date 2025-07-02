@@ -1,11 +1,20 @@
+// cryptoUtil.js
 const crypto = require("crypto");
+require("dotenv").config({
+  path: `.env.${process.env.NODE_ENV || "development"}`,
+});
 
-const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY || "your_32_characters_key_here"; // 32 bytes for AES-256
+
+
+const ENCRYPTION_KEY = crypto
+  .createHash("sha256")
+  .update(process.env.ENCRYPTION_KEY || "default_key_123456")
+  .digest(); // 32-byte key
 const IV_LENGTH = 16;
 
 function encrypt(text) {
   const iv = crypto.randomBytes(IV_LENGTH);
-  const cipher = crypto.createCipheriv("aes-256-cbc", Buffer.from(ENCRYPTION_KEY), iv);
+  const cipher = crypto.createCipheriv("aes-256-cbc", ENCRYPTION_KEY, iv);
   let encrypted = cipher.update(text, "utf8", "hex");
   encrypted += cipher.final("hex");
   return iv.toString("hex") + ":" + encrypted;
@@ -14,7 +23,7 @@ function encrypt(text) {
 function decrypt(text) {
   const [ivText, encryptedText] = text.split(":");
   const iv = Buffer.from(ivText, "hex");
-  const decipher = crypto.createDecipheriv("aes-256-cbc", Buffer.from(ENCRYPTION_KEY), iv);
+  const decipher = crypto.createDecipheriv("aes-256-cbc", ENCRYPTION_KEY, iv);
   let decrypted = decipher.update(encryptedText, "hex", "utf8");
   decrypted += decipher.final("utf8");
   return decrypted;

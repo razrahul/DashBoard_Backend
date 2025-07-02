@@ -66,8 +66,80 @@ const verifyOtpAndSignup = async (req, res) => {
   }
 };
 
+const { Op } = require("sequelize");
+const User = require("../../models/User");
+
+async function generateMemberId(user) {
+  if (!user.memberId && user.firstName && user.lastName) {
+    const firstInitial = user.firstName.charAt(0).toUpperCase();
+    const lastInitial = user.lastName.charAt(0).toUpperCase();
+    const initials = `${firstInitial}${lastInitial}`;
+
+    const count = await User.count({
+      where: {
+        memberId: {
+          [Op.like]: `${initials}%`,
+        },
+      },
+    });
+
+    const memberNumber = String(count + 1).padStart(3, "0");
+    user.memberId = `${initials}${memberNumber}`; // directly set
+  }
+
+  return user;
+}
+
+
+const dummyEntry = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const {firstName, lastName, roleId, pan, creditScore, currentBalance, address} = req.body;
+    // This is a dummy entry point for testing purposes
+
+    const user = await User.findOne({ where: { id } });
+
+    if (!user) {
+      throw new Error(ERROR_MESSAGE.USER_NOT_FOUND || "User not found.");
+    }
+
+    user.firstName = firstName || user.firstName;
+    user.lastName = lastName || user.lastName;
+    user.roleId = roleId || user.roleId;
+    user.pan = pan || user.pan;
+    user.creditScore = creditScore || user.creditScore;
+    user.currentBalance = currentBalance || user.currentBalance;
+    user.address = address || user.address;
+
+    if (!user.memberId) {
+      await generateMemberId(user); // Generate memberId if not set
+    }
+    await user.save();
+
+    sendSuccessResponse(res, SUCCESS_MESSAGE.USER_UPDATE_SUCCESS || "user updated successfully", user, 200);
+  } catch (error) {
+    sendErrorResponse(res, ERROR_MESSAGE.SOMETHING_WENT_WRONG, error.message, 500);
+  }
+};
+
+
+// find dummy user
+const findDummyUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await User.findOne({ where: { id } });
+    if (!user) {
+      throw new Error("Dummy user not found.");
+    }
+    sendSuccessResponse(res, SUCCESS_MESSAGE.DUMMY_USER_FOUND || "Dummy user found", user, 200);
+  } catch (error) {
+    sendErrorResponse(res, ERROR_MESSAGE.SOMETHING_WENT_WRONG, error.message, 500);
+  }
+};
 module.exports = {
   requestOtp,
   verifyOtpAndSignup,
-  test
+  test,
+  dummyEntry,
+  findDummyUser
 };
