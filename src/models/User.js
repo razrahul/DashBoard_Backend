@@ -93,15 +93,12 @@ const User = sequelize.define(
 
 // Generate memberId only when firstName and lastName are present AND memberId is not yet set
 User.beforeCreate(async (user, options) => {
-<<<<<<< HEAD
   // Check if id is not set
   if (!user.id) {
     const max = await User.max("id") || 0;
     user.id = max + 1;
   }
   // Check if memberId is not set and both firstName and lastName are provided
-=======
->>>>>>> 770a43c158a2739f3290f38f414c2382c7bf632d
   if (!user.memberId && user.firstName && user.lastName) {
     const firstInitial = user.firstName.charAt(0).toUpperCase();
     const lastInitial = user.lastName.charAt(0).toUpperCase();
