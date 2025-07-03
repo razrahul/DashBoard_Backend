@@ -7,7 +7,7 @@ require("dotenv").config({
   path: `.env.${process.env.NODE_ENV || "development"}`,
 });
 
-const authMiddleware = async (req, res, next) => {
+const authenticateToken = async (req, res, next) => {
   // get token
   const authHeader = req.headers["authorization"];
 
@@ -97,7 +97,7 @@ const authorize = (allowedRoles) => {
 };
 
 module.exports = {
-  authMiddleware,
+  authenticateToken,
   isAuthorizeAdmin,
   authorize,
 };
