@@ -3,7 +3,7 @@ const {
     SUCCESS_MESSAGE,
 } = require('../../utils/propertyResolver')
 
-
+const {Op} = require('sequelize');
 const Plan = require('../../models/Plan');
 
 const createPlan = async (planData) => {
@@ -55,15 +55,15 @@ const updatePlanById = async (id, planData) => {
             throw new Error(ERROR_MESSAGE.PLAN_NOT_FOUND || "Plan not found");
         }
         const { planName, planTitle, planDescription, minimumInvestment } = planData;
-        if(planName) planData.planName = planName.trim();
-        if(planTitle) planData.planTitle = planTitle.trim();
-        if(planDescription) planData.planDescription = planDescription.trim();
-        if(minimumInvestment) planData.minimumInvestment = minimumInvestment.trim();
+        if(planName) plan.planName = planName.trim();
+        if(planTitle) plan.planTitle = planTitle.trim();
+        if(planDescription) plan.planDescription = planDescription.trim();
+        if(minimumInvestment) plan.minimumInvestment = minimumInvestment.trim();
         // Check if the planName already exists for another plan
         const existingPlan = await Plan.findOne({
             where: {
                 planName: planData.planName,
-                id: { [Op.ne]: id } // Exclude the current plan
+                uuId: { [Op.ne]: id } // Exclude the current plan
             }
         });
         if (existingPlan) {
