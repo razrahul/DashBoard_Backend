@@ -29,8 +29,10 @@ const Leads = sequelize.define(
       allowNull: true,
     },
     status: {
-      type: DataTypes.STRING,
-      allowNull: true,
+      type: DataTypes.STRING,// enum :- ['convertd', 'contacted', 'ending',"new "",  'Ending'],
+      enum: ['convertd', 'contacted', 'ending', 'new'],
+      defaultValue: 'new',
+      allowNull: false,
     },
     ...BaseModel.rawAttributes,
   },

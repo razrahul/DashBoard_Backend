@@ -2,6 +2,7 @@ const Auth = require("../models/auth");
 const Role = require("../models/Role");
 const User = require("../models/User");
 const Plan = require("../models/Plan");
+const UserPlan = require("../models/UserPlan");
 
 const tableSync = async () => {
   try {
@@ -9,6 +10,7 @@ const tableSync = async () => {
     await Role.sync({force: false });
     await User.sync({ force: false});
     await Plan.sync({ force: false });
+    await UserPlan.sync({ force: false });
     // console.log("table create successfully");
 
   } catch (error) {

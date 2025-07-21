@@ -11,6 +11,7 @@ const {
 const { sendOtpPhone, sendOtpEmail } = require("../../utils/sendotp");
 const { generateOtp, verifyOtp } = require("../../service/otp/otpServices");
 const { createAuthUser } = require("../../service/authServices/index");
+const Role = require("../../models/Role");
 
 // ✅ Test endpoint (for health check)
 const test = async (req, res) => {
@@ -136,10 +137,29 @@ const findDummyUser = async (req, res) => {
     sendErrorResponse(res, ERROR_MESSAGE.SOMETHING_WENT_WRONG, error.message, 500);
   }
 };
+
+
+const getAllDuummyUsers = async (req, res) => {
+  try {
+    const users = await User.findAll({
+      include: [
+        {
+          model: Role,
+          as: 'role',
+          attributes: ['id', 'uuId', 'roleName'] // Include role details if needed
+        }
+      ],
+    });
+    sendSuccessResponse(res, SUCCESS_MESSAGE.DUMMY_USERS_FETCHED || "Dummy users fetched successfully", users, 200);
+  } catch (error) {
+    sendErrorResponse(res, ERROR_MESSAGE.SOMETHING_WENT_WRONG, error.message, 500);
+  }
+};
 module.exports = {
   requestOtp,
   verifyOtpAndSignup,
   test,
   dummyEntry,
-  findDummyUser
+  findDummyUser,
+  getAllDuummyUsers,
 };

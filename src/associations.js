@@ -32,12 +32,34 @@ Plan.hasMany(Transaction, { foreignKey: "planId" });
 Transaction.belongsTo(User, { as: "ApprovedBy", foreignKey: "approvedBy" });
 Transaction.belongsTo(User, { as: "RejectedBy", foreignKey: "rejectBy" });
 
-// UserPlan → User & Plan
-UserPlan.belongsTo(User, { foreignKey: "memberId", targetKey: "memberId" });
-User.hasMany(UserPlan, { foreignKey: "memberId", sourceKey: "memberId" });
+// ✅ UserPlan → User (foreignKey = memberId referencing uuId)
+UserPlan.belongsTo(User, {
+  foreignKey: "memberId",   // field in UserPlan
+  targetKey: "memberId",    // field in User
+  as: "user",               // optional alias
+});
 
-UserPlan.belongsTo(Plan, { foreignKey: "planId" });
-Plan.hasMany(UserPlan, { foreignKey: "planId" });
+
+User.hasMany(UserPlan, {
+  foreignKey: "memberId",   // field in UserPlan
+  sourceKey: "memberId",    // field in User
+  as: "userPlans",          // optional alias
+});
+
+
+// ✅ UserPlan → Plan (foreignKey = planId referencing uuId)
+UserPlan.belongsTo(Plan, {
+  foreignKey: "planId",     // field in UserPlan
+  targetKey: "uuId",        // field in Plan
+  as: "plan",               // optional alias
+});
+
+Plan.hasMany(UserPlan, {
+  foreignKey: "planId",     // field in UserPlan
+  sourceKey: "uuId",        // field in Plan
+  as: "userPlans",          // optional alias
+});
+
 
 // Notification → User
 Notification.belongsTo(User, { foreignKey: "memberId", targetKey: "memberId" });
