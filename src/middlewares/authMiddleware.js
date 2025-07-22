@@ -16,7 +16,7 @@ const authenticateToken = async (req, res, next) => {
   const token = authHeader && authHeader.split(" ")[1];
   // cheack if token is present
   if (!token) {
-    return sendErrorResponse(res, ERROR_MESSAGE.UNAUTHORIZED || "Unauthorized & Token Missing","", 400);
+    return sendErrorResponse(res, ERROR_MESSAGE.TOKRN_MISSING || "Unauthorized & Token Missing","", 400);
     }
   try {
     // Verify the token
@@ -24,7 +24,7 @@ const authenticateToken = async (req, res, next) => {
     if (!decoded) {
       return sendErrorResponse(
         res,
-        ERROR_MESSAGE?.UNAUTHORIZED || "Unauthorized",
+        ERROR_MESSAGE?.TOKEN_NOT_FOUND || "Unauthorized & Token Not Found",
         "",
         401
       );
@@ -33,11 +33,11 @@ const authenticateToken = async (req, res, next) => {
     req.user = decoded;
     next();
   } catch (error) {
-    console.error("Auth Middleware Error:", error);
+    // console.error("Auth Middleware Error:", error);
     return sendErrorResponse(
       res,
-      error.message || ERROR_MESSAGE.SOMETHING_WENT_WRONG,
-      "",
+      ERROR_MESSAGE.TOKEN_RELETED_ERROR || "Internal Server Error",
+      error.message,
       400
     );
   }
@@ -64,7 +64,7 @@ const isAuthorizeAdmin = async (req, res, next) => {
     next(); // Authorized
   } catch (error) {
     console.error("Authorization error:", error);
-    return sendErrorResponse(res, ERROR_MESSAGE.INTERNAL_SERVER_ERROR || "Internal Server Error", error.message, 500);
+    return sendErrorResponse(res, ERROR_MESSAGE.SUPERaDMIN_CHECK_ERROR || "Internal Server Error", error.message, 500);
   }
 };
 
@@ -77,7 +77,7 @@ const authorize = (allowedRoles) => {
       const role = await Roles.findOne({ where: { uuId: req.user.roleId } });
 
       if (!role) {
-        return sendErrorResponse(res, ERROR_MESSAGE.UNAUTHORIZED || "Unauthorized", "", 400);
+        return sendErrorResponse(res, ERROR_MESSAGE.YOUR_ROLE_NOT_FOUND || "Unauthorized", "", 400);
       }
 
       // Normalize the role name
@@ -85,13 +85,13 @@ const authorize = (allowedRoles) => {
 
       // Check if the user's role is in the allowed roles
       if (!normalizedRoleName || !allowedRoles.includes(normalizedRoleName)) {
-        return sendErrorResponse(res, ERROR_MESSAGE.UNAUTHORIZED || "Unauthorized", "", 400);
+        return sendErrorResponse(res, ERROR_MESSAGE.YOUR_ROLE_NOT_MATCH || "Unauthorized", "", 400);
       }
 
       next(); // Authorized
     } catch (error) {
       console.error("Authorization error:", error);
-      return sendErrorResponse(res, ERROR_MESSAGE.INTERNAL_SERVER_ERROR || "Internal Server Error", error.message, 500);
+      return sendErrorResponse(res, ERROR_MESSAGE.YOUR_ROLE_CHECK_ERROR || "Internal Server Error", error.message, 500);
     }
   };
 };

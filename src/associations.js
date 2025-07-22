@@ -17,8 +17,23 @@ User.belongsTo(Role, { foreignKey: "roleId",targetKey: "uuId", as: "role" });
 Role.hasMany(User, { foreignKey: "roleId", sourceKey: "uuId",  as: "user"  });
 
 // 🔗 User → Account (One User has One Account)
-User.hasOne(Account, { foreignKey: "memberId", sourceKey: "memberId" });
-Account.belongsTo(User, { foreignKey: "memberId", targetKey: "memberId" });
+// User.hasOne(Account, { foreignKey: "memberId", sourceKey: "memberId" });
+// Account.belongsTo(User, { foreignKey: "memberId", targetKey: "memberId" });
+// User → Account (One-to-One)
+Account.belongsTo(User, {
+  foreignKey: "memberId",     // Account.memberId refers to
+  targetKey: "memberId",      // User.memberId
+  as: "user"                  // Optional: adds account.getUser()
+});
+
+User.hasOne(Account, {
+  foreignKey: "memberId",     // Account.memberId refers to
+  sourceKey: "memberId",      // User.memberId
+  as: "account"               // Optional: adds user.getAccount()
+});
+
+
+
 
 // 🔗 User → Transaction (One User has Many Transactions)
 User.hasMany(Transaction, { foreignKey: "memberId", sourceKey: "memberId" });
