@@ -26,6 +26,16 @@ exports.ERROR_MESSAGE = {
     UNAUTHORIZED_SUPERADMIN: "Unauthorized SuperAdmin",
     INTERNAL_SERVER_ERROR: "Internal Server Error",
     UNAUTHORIZED: "Unauthorized",
+    ACCOUNT_NOT_FOUND: "Account not found",
+    ACCOUNT_ID_REQUIRED: "Account ID is required",
+    MEMBER_ID_REQUIRED: "Member ID is required",
+    TOKEN_NOT_FOUND:"Unauthorized & Token Not Found",
+    TOKRN_MISSING: "Unauthorized & Token Missing",
+    TOKEN_RELETED_ERROR: "tOKEN Related Error",
+    SUPERaDMIN_CHECK_ERROR: "SuperAdmin check error",
+    YOUR_ROLE_NOT_FOUND: "Your role not found",
+    YOUR_ROLE_NOT_MATCH: "Your role does not match the required roles",
+    YOUR_ROLE_CHECK_ERROR: "Your role check error",
 
     
     
@@ -49,5 +59,11 @@ exports.SUCCESS_MESSAGE = {
     PLAN_FETCHED_SUCCESSFULLY: "Plan fetched successfully",
     PLAN_UPDATED_SUCCESSFULLY: "Plan updated successfully",
     PLAN_DELETED_SUCCESSFULLY: "Plan deleted successfully",
+    ACCOUNT_DELETED_SUCCESSFULLY: "Account deleted successfully",
+    ACCOUNT_CREATED_SUCCESSFULLY: "Account created successfully",
+    ACCOUNTS_FETCHED_SUCCESSFULLY: "Accounts fetched successfully",
+    ACCOUNT_UPDATED_SUCCESSFULLY: "Account updated successfully",
+    ACCOUNT_FETCHED_SUCCESSFULLY: "Account fetched successfully",
+    ACCOUNT_DELETED_SUCCESSFULLY: "Account deleted successfully",
 
 };
