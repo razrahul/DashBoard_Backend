@@ -3,8 +3,13 @@ const sequelize = require("../config/dbConnect");
 const BaseModel = require("./baseModel");
 
 const Leads = sequelize.define(
-  "Leads",
+  "Lead",
   {
+    id: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      unique: true,
+    },
     firstName: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -15,11 +20,12 @@ const Leads = sequelize.define(
     },
     number: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
+      trim: true,
     },
     email: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: false,
       validate: {
         isEmail: true,
       },
@@ -42,5 +48,13 @@ const Leads = sequelize.define(
     freezeTableName: true,
   }
 );
+
+// custom auto-increment logic
+Leads.beforeCreate(async (instance) => {
+  if (!instance.id) {
+    const max = await Leads.max("id") || 0;
+    instance.id = max + 1;
+  }
+});
 
 module.exports = Leads;
