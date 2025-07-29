@@ -3,6 +3,7 @@ const authRouter = require('./auth')
 const roleRouter = require('./role')
 const planRouter = require('./plan')
 const accountRouter = require('./account')
+const leadRouter = require('./lead')
 
 
 
@@ -13,6 +14,7 @@ indexRouter.use('/auth', authRouter);
 indexRouter.use('/role', roleRouter);
 indexRouter.use('/plan', planRouter);
 indexRouter.use('/account', accountRouter);
+indexRouter.use('/lead', leadRouter);
 
 
 
