@@ -77,8 +77,8 @@ Plan.hasMany(UserPlan, {
 
 
 // Notification → User
-Notification.belongsTo(User, { foreignKey: "memberId", targetKey: "memberId" });
-User.hasMany(Notification, { foreignKey: "memberId", sourceKey: "memberId" });
+Notification.belongsTo(User, { foreignKey: "memberId", targetKey: "memberId", as: "user" });
+User.hasMany(Notification, { foreignKey: "memberId", sourceKey: "memberId", as: "notifications" });
 
 // Ticket → AssignedToUser (User)
 Ticket.belongsTo(User, { as: "AssignedToUser", foreignKey: "assignedToUser" });
