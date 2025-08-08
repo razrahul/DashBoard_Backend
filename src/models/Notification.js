@@ -5,6 +5,11 @@ const BaseModel = require("./baseModel");
 const Notification = sequelize.define(
   "Notification",
   {
+    id: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      unique: true,
+    },
     notificationType: {
       type: DataTypes.BIGINT,
       allowNull: false,
@@ -20,6 +25,12 @@ const Notification = sequelize.define(
     memberId: {
       type: DataTypes.STRING,
       allowNull: false,
+      references: {
+        model: "User",
+        key: "memberId",
+      },
+      onUpdate: "CASCADE",
+      onDelete: "CASCADE",
     },
     ...BaseModel.rawAttributes,
   },
@@ -29,5 +40,13 @@ const Notification = sequelize.define(
     freezeTableName: true,
   }
 );
+
+// Custom auto-increment logic
+Notification.beforeCreate(async (instance) => {
+  if (!instance.id) {
+    const max = await Notification.max("id") || 0;
+    instance.id = max + 1;
+  }
+});
 
 module.exports = Notification;
