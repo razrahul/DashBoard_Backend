@@ -1,20 +1,27 @@
 openapi: 3.0.0
 info:
-  title: CMS - Contact User Dashboard API
+  title: Financial Broker App API
   description: |
-    This is the backend API for the **Contact User Dashboard (CMS)**, designed to manage user contact submissions, feedback, vacancies, and FAQs efficiently.
+    This is the backend API for the **Financial Broker App**, a platform where users can invest a chosen amount and receive a fixed return — similar to mutual funds, but with a predefined percentage yield.
 
-    The API provides endpoints for form submissions, data retrieval, status updates, and overall dashboard management.
+    **Key Features:**
+    - Users can create an account, deposit an investment amount, and track returns.
+    - Fixed ROI plans (e.g., 24% annual returns) with transparent payout schedules.
+    - Portfolio tracking, withdrawal requests, and reinvestment options.
+    - Admin panel to manage users, investments, and payout operations.
 
-     We encourage contributions to improve and extend the API. Feel free to explore, suggest changes, or enhance the features.
-    
-    Some useful links:
+    **Example Use Case:**
+    1. User invests ₹50,000.
+    2. System locks the investment under a fixed return plan (e.g., 24% p.a.).
+    3. Monthly or quarterly payouts are automatically credited to the user.
+
+    **Useful Links:**
     - [Backend Repository](https://github.com/razrahul/CMS_Backend)
-    
-    - [Frontend UI(netlify)](https://contact-fromdata.netlify.app)
-    - [Frontend UI(render)](https://client-frontend-juzp.onrender.com)
-    
+    - [Frontend UI (Netlify)](https://contact-fromdata.netlify.app)
+    - [Frontend UI (Render)](https://client-frontend-juzp.onrender.com)
+
   termsOfService: http://swagger.io/terms/
+
   contact:
     name: Rahul Kumar
     email: razrahuleee@gmail.com
@@ -27,7 +34,7 @@ servers:
   - url: https://cms-backend-uq80.onrender.com/api/v1
     description: stgae Server
   - url: http://localhost:5000/api/v1
-    description: Local Development Server
+    description: Local Server
 
 components:
   securitySchemes:
@@ -38,146 +45,70 @@ components:
       type: http
       scheme: bearer
 tags:
-  - name: conatct
   - name: auth
-  - name: chat
-  - name: admin
-  - name: stats
+  - name: role
+  - name: Dummy
+  - name: plan
+  - name: Testing
+  - name: Account
+  - name: Lead
+  - name: Notification
+  - name: Ticket
 paths:
-  /contact/create:
+  /auth/request-otp:
     post:
       tags:
-        - conatct
-      summary: create contact
+        - auth
+      summary: request otp
       requestBody:
         content:
           application/json:
             schema:
               type: object
               example:
-                name: Rajan Kumar
-                email: rajan@gmail.com
                 phone: '9708712422'
-                nationlity: Indian
-                createdBy: 1
-      security:
-        - noauthAuth: []
+                email: rahulkumar852145@gmail.com
       responses:
         '200':
           description: Successful response
           content:
             application/json: {}
-  /contact:
-    get:
-      tags:
-        - conatct
-      summary: featch all contact
-      security:
-        - noauthAuth: []
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json: {}
-  /contact/latest:
-    get:
-      tags:
-        - conatct
-      summary: latest 5 conatct
-      security:
-        - bearerAuth: []
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json: {}
-  /contact/status/{id}:
-    put:
-      tags:
-        - conatct
-      summary: status change
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              example:
-                status: complete
-      security:
-        - noauthAuth: []
-      parameters:
-        - name: id
-          in: path
-          schema:
-            type: string
-          required: true
-          example: 07265fb6-7c4d-4e98-9d2d-84cba2f508a0
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json: {}
-  /contact/activity/{id}:
-    put:
-      tags:
-        - conatct
-      summary: change activity
-      requestBody:
-        content: {}
-      security:
-        - noauthAuth: []
-      parameters:
-        - name: id
-          in: path
-          schema:
-            type: string
-          required: true
-          example: 07265fb6-7c4d-4e98-9d2d-84cba2f508a0
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json: {}
-  /contact/call/{id}:
-    put:
-      tags:
-        - conatct
-      summary: make a call
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              example:
-                date: '2025-05-30'
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: id
-          in: path
-          schema:
-            type: string
-          required: true
-          example: 07265fb6-7c4d-4e98-9d2d-84cba2f508a0
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json: {}
-  /auth/verify-account/{token}:
-    get:
+  /auth/verify-otp:
+    post:
       tags:
         - auth
-      summary: User Account verification
+      summary: verify-otp
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                phone: '9708712422'
+                phoneOtp: '903542'
+                email: rahulkumar852145@gmail.com
+                emailOtp: '228205'
       security:
         - noauthAuth: []
-      parameters:
-        - name: token
-          in: path
-          schema:
-            type: string
-          required: true
-          example: 42ce6499-fca4-4c59-a837-c546f763be32
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /auth/login-request-otp:
+    post:
+      tags:
+        - auth
+      summary: login request otp
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                phoneoremail: rahulkumar852145@gmail.com
+      security:
+        - noauthAuth: []
       responses:
         '200':
           description: Successful response
@@ -187,16 +118,15 @@ paths:
     post:
       tags:
         - auth
-      summary: login
+      summary: 'verify otp and login '
       requestBody:
         content:
           application/json:
             schema:
               type: object
               example:
-                email: rahulkumar852145@gmail.com
-                password: Test@12345
-                rememberPassword: true
+                phoneoremail: rahulkumar852145@gmail.com
+                otp: '174981'
       security:
         - noauthAuth: []
       responses:
@@ -204,193 +134,120 @@ paths:
           description: Successful response
           content:
             application/json: {}
-  /auth/register:
+  /role:
     post:
       tags:
-        - auth
-      summary: user register
+        - role
+      summary: create Role
       requestBody:
         content:
           application/json:
             schema:
               type: object
               example:
-                firstName: Rahul
-                lastName: Kumar
-                email: rahulkumar852145@gmail.com
-                password: Test@12345
-                phone: '9708712422'
-                dob: '2020-01-20'
-                roleId: b287299d-1698-11f0-bf71-ab5ed40ec6b9
-                company: 1d00eb73-169b-11f0-bf71-ab5ed40ec6b9
-                createdBy: 1
+                roleName: SuperAdmin
       responses:
         '200':
           description: Successful response
           content:
             application/json: {}
-  /auth/users:
     get:
       tags:
-        - auth
-      summary: featch all users
-      security:
-        - bearerAuth: []
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json: {}
-  /auth/verifation/{id}:
-    put:
-      tags:
-        - auth
-      summary: Activity change ( verification)
-      requestBody:
-        content: {}
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: id
-          in: path
-          schema:
-            type: string
-          required: true
-          example: 33dbfd4b-b593-40ee-88b4-9baa5a5ad989
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json: {}
-  /chat/create/{id}:
-    post:
-      tags:
-        - chat
-      summary: create chat
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              example:
-                request: this is test message
-                createdBy: 1
-      security:
-        - noauthAuth: []
-      parameters:
-        - name: id
-          in: path
-          schema:
-            type: string
-          required: true
-          example: 75e36ff6-2641-4205-a956-5e16a8997d67
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json: {}
-  /chat/reply/{id}:
-    post:
-      tags:
-        - chat
-      summary: reply send
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              example:
-                message: teat for reply6 send
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: id
-          in: path
-          schema:
-            type: string
-          required: true
-          example: 45dc290d-5d09-46a2-b30c-b24d64ff06e9
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json: {}
-  /chat/activity/{id}:
-    put:
-      tags:
-        - chat
-      summary: Activity Change
-      requestBody:
-        content: {}
-      security:
-        - noauthAuth: []
-      parameters:
-        - name: id
-          in: path
-          schema:
-            type: string
-          required: true
-          example: cbc1cb44-fb29-47ac-8b7a-72b95c439cdc
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json: {}
-  /admin/roles:
-    get:
-      tags:
-        - admin
+        - role
       summary: get All Roles
-      security:
-        - noauthAuth: []
       responses:
         '200':
           description: Successful response
           content:
             application/json: {}
-  /admin/roles-active:
+  /role/{uuId}:
     get:
       tags:
-        - admin
-      summary: get All Active Roles
-      security:
-        - noauthAuth: []
+        - role
+      summary: get role by id
+      parameters:
+        - name: uuId
+          in: path
+          schema:
+            type: string
+          required: true
+          example: eaa3b4fc-cf10-4632-bdb1-b1e2a89d91c5
       responses:
         '200':
           description: Successful response
           content:
             application/json: {}
-  /admin/companies-active:
+    put:
+      tags:
+        - role
+      summary: update role
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                roleName: rahul
+      parameters:
+        - name: uuId
+          in: path
+          schema:
+            type: string
+          required: true
+          example: eaa3b4fc-cf10-4632-bdb1-b1e2a89d91c5
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    delete:
+      tags:
+        - role
+      summary: delete role
+      parameters:
+        - name: uuId
+          in: path
+          schema:
+            type: string
+          required: true
+          example: eaa3b4fc-cf10-4632-bdb1-b1e2a89d91c5
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /auth/dummy-user/{id}:
     get:
       tags:
-        - admin
-      summary: get All Active companies
-      security:
-        - noauthAuth: []
+        - Dummy
+      summary: find dummy_user
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: integer
+          required: true
+          example: '1'
       responses:
         '200':
           description: Successful response
           content:
             application/json: {}
-  /admin/companies:
-    get:
-      tags:
-        - admin
-      summary: get All companies
-      security:
-        - noauthAuth: []
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json: {}
-  /stats/visit:
+  /plan:
     post:
       tags:
-        - stats
-      summary: create visitor
+        - plan
+      summary: create plan
       requestBody:
-        content: {}
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                planName: Sigma 2.O
+                planTitle: Sigma Invesment || Mega auction
+                planDescription: Invest here content return 12%
+                minimumInvestment: '500'
       security:
         - noauthAuth: []
       responses:
@@ -398,11 +255,115 @@ paths:
           description: Successful response
           content:
             application/json: {}
-  /stats/today:
     get:
       tags:
-        - stats
-      summary: today stats
+        - plan
+      summary: get All Plan
+      security:
+        - noauthAuth: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /plan/{uuId}:
+    get:
+      tags:
+        - plan
+      summary: get Plan by id
+      security:
+        - noauthAuth: []
+      parameters:
+        - name: uuId
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 115e423a-fc62-4929-b1ec-fb0fb8fac0b9
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    put:
+      tags:
+        - plan
+      summary: update Plan by id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                planName: Sigma 2.O
+                planTitle: Sigma Invesment || Mega auction
+                planDescription: Invest here content return 12%
+                minimumInvestment: '500'
+      security:
+        - noauthAuth: []
+      parameters:
+        - name: uuId
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 115e423a-fc62-4929-b1ec-fb0fb8fac0b9
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    delete:
+      tags:
+        - plan
+      summary: delete Plan by id
+      security:
+        - noauthAuth: []
+      parameters:
+        - name: uuId
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 115e423a-fc62-4929-b1ec-fb0fb8fac0b9
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /auth/plans:
+    post:
+      tags:
+        - Testing
+      summary: create userPlan
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                memberId: Rk001
+                planId: c3410fe1-c5e3-42ff-b754-0c221c9c8c70
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /account:
+    post:
+      tags:
+        - Account
+      summary: Craete Account
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                accountHolderName: RAhul Kumar
+                accountNumber: '97087124225869'
+                IFSCCode: SBIN0003532
+                bankName: STATE BANK OF INDIA
       security:
         - bearerAuth: []
       responses:
@@ -410,11 +371,30 @@ paths:
           description: Successful response
           content:
             application/json: {}
-  /stats/all:
+  /account/{memberId}:
     get:
       tags:
-        - stats
-      summary: all stats
+        - Account
+      summary: get Account by memberId --Only for Admin
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: memberId
+          in: path
+          schema:
+            type: string
+          required: true
+          example: RK001
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /account/member:
+    delete:
+      tags:
+        - Account
+      summary: Delete Account member
       security:
         - bearerAuth: []
       responses:
@@ -422,13 +402,298 @@ paths:
           description: Successful response
           content:
             application/json: {}
-  /stats/week:
+  /lead:
+    post:
+      tags:
+        - Lead
+      summary: create Lead
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                firstName: 'Rahul '
+                lastName: Kumar
+                number: '9708712422'
+                email: raz@gmail.com
+                title: 'Add This contant '
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
     get:
       tags:
-        - stats
-      summary: week stats
+        - Lead
+      summary: get All Leads
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /lead/search:
+    get:
+      tags:
+        - Lead
+      summary: Search All Leads
+      parameters:
+        - name: emailornum
+          in: query
+          schema:
+            type: string
+          example: raz
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /lead/{emailornum}:
+    get:
+      tags:
+        - Lead
+      summary: get Lead by email and number
+      parameters:
+        - name: emailornum
+          in: path
+          schema:
+            type: integer
+          required: true
+          example: '9808712422'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /notif/member:
+    get:
+      tags:
+        - Notification
+      summary: Get Notification member --> Self
       security:
         - bearerAuth: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    delete:
+      tags:
+        - Notification
+      summary: delete notification by  memeber --> self
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /notif:
+    post:
+      tags:
+        - Notification
+      summary: create Notification
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                notificationType: E-commerce
+                notificationTitle: This check foe notifiication create
+                notificationMessage: you can check for there Link for E-commerce
+                memberId: RK001
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      tags:
+        - Notification
+      summary: get Alll Notification
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /notif/{id}:
+    get:
+      tags:
+        - Notification
+      summary: get notification by UUid
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: d28d1794-acf7-4d3e-b9e2-4214ea2c41fd
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    put:
+      tags:
+        - Notification
+      summary: update notification
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                notificationType: E-commerce
+                notificationTitle: This check for update   notifiication create
+                notificationMessage: you can check for there Link for E-commerce
+                memberId: RK001
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: d28d1794-acf7-4d3e-b9e2-4214ea2c41fd
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    delete:
+      tags:
+        - Notification
+      summary: delete notifiication by uuid
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: d28d1794-acf7-4d3e-b9e2-4214ea2c41fd
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /ticket:
+    post:
+      tags:
+        - Ticket
+      summary: create ticket
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                ticketSubject: This is test for ticket
+                priority: priority to test
+      security:
+        - noauthAuth: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      tags:
+        - Ticket
+      summary: get all ticket
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /ticket/{id}:
+    post:
+      tags:
+        - Ticket
+      summary: ticket assign to user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                userId: d43affc1-7c2a-42be-8e5a-6f9159a92506
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 992a7cd2-dbc5-4e5b-b0cc-87a83eaa0820
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      tags:
+        - Ticket
+      summary: get ticket by id
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 992a7cd2-dbc5-4e5b-b0cc-87a83eaa0820
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    put:
+      tags:
+        - Ticket
+      summary: update ticket
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                ticketSubject: This is test for update ticket
+                priority: priority to test
+      security:
+        - noauthAuth: []
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 992a7cd2-dbc5-4e5b-b0cc-87a83eaa0820
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    delete:
+      tags:
+        - Ticket
+      summary: delete ticket
+      security:
+        - noauthAuth: []
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 992a7cd2-dbc5-4e5b-b0cc-87a83eaa0820
       responses:
         '200':
           description: Successful response
