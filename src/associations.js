@@ -80,9 +80,20 @@ Plan.hasMany(UserPlan, {
 Notification.belongsTo(User, { foreignKey: "memberId", targetKey: "memberId", as: "user" });
 User.hasMany(Notification, { foreignKey: "memberId", sourceKey: "memberId", as: "notifications" });
 
-// Ticket → AssignedToUser (User)
-Ticket.belongsTo(User, { as: "AssignedToUser", foreignKey: "assignedToUser" });
-User.hasMany(Ticket, { as: "AssignedTickets", foreignKey: "assignedToUser" });
+// Ticket → User (one ticket is assigned to one user)
+Ticket.belongsTo(User, {
+  as: "user",                    // alias 'user'
+  foreignKey: "assignedToUser",  // Ticket table ka column
+  targetKey: "uuId"              // User table ka column
+});
+
+// User → Ticket (one user can have many tickets)
+User.hasMany(Ticket, {
+  as: "tickets",                 // alias 'tickets'
+  foreignKey: "assignedToUser",  // Ticket table ka column
+  sourceKey: "uuId"              // User table ka column
+});
+
 module.exports = {
   User,
   Role,
