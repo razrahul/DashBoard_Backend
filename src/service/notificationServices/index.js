@@ -5,8 +5,8 @@ const {
 
 const Notification = require("../../models/Notification");
 const  User = require("../../models/User");
-const { getNotificationByMemberId } = require("../../controller/notification");
-const { where } = require("sequelize");
+// const { getNotificationByMemberId } = require("../../controller/notification");
+// const { where } = require("sequelize");
 
 
 const NotificationServices = {

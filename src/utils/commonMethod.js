@@ -6,6 +6,7 @@ const UserPlan = require("../models/UserPlan");
 const Account = require("../models/Account");
 const Lead = require("../models/Leads");
 const Notification = require("../models/Notification");
+const Tiket = require("../models/Ticket");
 
 const tableSync = async () => {
   try {
@@ -17,6 +18,7 @@ const tableSync = async () => {
     await Account.sync({ force: false });
     await Lead.sync({ force: false });
     await Notification.sync({ force: false });
+    await Tiket.sync({ force: false });
     // console.log("table create successfully");
 
   } catch (error) {
