@@ -31,7 +31,7 @@ info:
   version: 1.0.0
 
 servers:
-  - url: https://cms-backend-uq80.onrender.com/api/v1
+  - url: https://dashboard-backend-06ls.onrender.com/api/v1
     description: stgae Server
   - url: http://localhost:5000/api/v1
     description: Local Server
