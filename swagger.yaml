@@ -54,6 +54,7 @@ tags:
   - name: Lead
   - name: Notification
   - name: Ticket
+  - name: Transaction
 paths:
   /auth/request-otp:
     post:
@@ -216,6 +217,38 @@ paths:
           description: Successful response
           content:
             application/json: {}
+  /auth/dummy-entry/{id}:
+    post:
+      tags:
+        - Dummy
+      summary: user_dummy_entry
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                firstName: Niranjan
+                lastName: Patel
+                roleId: a8065dc7-95f8-429b-9204-67b75fd2d8fd
+                pan: DAJDG4150P
+                creditScore: '650'
+                currentBalance: '1000'
+                address: Nepal
+      security:
+        - noauthAuth: []
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: integer
+          required: true
+          example: '2'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
   /auth/dummy-user/{id}:
     get:
       tags:
@@ -228,6 +261,33 @@ paths:
             type: integer
           required: true
           example: '1'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /auth/pan-verification/{id}:
+    post:
+      tags:
+        - Dummy
+      summary: Dummy Pan verification
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: string
+              example: >-
+                "{\r\n   \"pan\":\"SDBHHED2545\",\r\n  
+                \"dob\":\"21-205-25\"\r\n}"
+      security:
+        - noauthAuth: []
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: integer
+          required: true
+          example: '3'
       responses:
         '200':
           description: Successful response
@@ -694,6 +754,44 @@ paths:
             type: string
           required: true
           example: 992a7cd2-dbc5-4e5b-b0cc-87a83eaa0820
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /trans/create-order:
+    post:
+      tags:
+        - Transaction
+      summary: Create order(Transaction)
+      requestBody:
+        content: {}
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /trans/verify-payment":
+    post:
+      tags:
+        - Transaction
+      summary: Verify transaction
+      requestBody:
+        content: {}
+      security:
+        - noauthAuth: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /trans/razorpay-key:
+    get:
+      tags:
+        - Transaction
+      summary: get razorpay key
+      security:
+        - noauthAuth: []
       responses:
         '200':
           description: Successful response
