@@ -6,6 +6,7 @@ const accountRouter = require('./account')
 const leadRouter = require('./lead')
 const notificationRouter = require('./notification')
 const tiketRouter = require('./tiket')
+const transactionRouter = require('./transaction')
 
 
 
@@ -18,6 +19,7 @@ indexRouter.use('/account', accountRouter);
 indexRouter.use('/lead', leadRouter);
 indexRouter.use('/notif', notificationRouter);
 indexRouter.use('/ticket', tiketRouter);
+indexRouter.use('/trans', transactionRouter);
 
 
 

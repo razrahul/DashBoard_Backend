@@ -30,4 +30,7 @@ router.post("/plans", userPlanController.createUserPlan);
 // get all plans
 router.get("/plans", userPlanController.getAllUserPlans);
 
+
+// Dummy PAN Verification
+router.post("/pan-verification/:id", userController.panVerficationDummy);
 module.exports = router;

@@ -145,9 +145,31 @@ const loginOtpVerify = async (req, res) => {
 };
 
 
+
+const panVerficationDummy = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { pan, dob } = req.body;
+    if (!pan) {
+      throw new Error(ERROR_MESSAGE.PAN_REQ || "PAN is required.");
+    }
+    const result = await userService.dummyPanEntery({id, pan, dob });
+    sendSuccessResponse(res, SUCCESS_MESSAGE.PAN_VERIFICATION_SUCCESS || "PAN Verification Success", result, 200);
+  } catch (error) {
+    sendErrorResponse(
+      res,
+      error.message || ERROR_MESSAGE.SOMETHING_WENT_WRONG,
+      "",
+      500
+    );
+  }
+};
+
+
 module.exports = {
   requestOtp,
   verifyOtpAndSignup,
   loginOtpRequest,
-  loginOtpVerify
+  loginOtpVerify,
+  panVerficationDummy,
 };

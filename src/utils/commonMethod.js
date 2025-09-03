@@ -7,6 +7,7 @@ const Account = require("../models/Account");
 const Lead = require("../models/Leads");
 const Notification = require("../models/Notification");
 const Tiket = require("../models/Ticket");
+const Transaction = require("../models/Transaction");
 
 const tableSync = async () => {
   try {
@@ -19,6 +20,7 @@ const tableSync = async () => {
     await Lead.sync({ force: false });
     await Notification.sync({ force: false });
     await Tiket.sync({ force: false });
+    await Transaction.sync({ force: false });
     // console.log("table create successfully");
 
   } catch (error) {
