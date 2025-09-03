@@ -7,6 +7,8 @@ const User = require('../../models/User');
 
  const { Op } = require('sequelize');
  const jwt = require('jsonwebtoken');
+const Role = require('../../models/Role');
+
 
 const createUser = async ({ phone, email }) => {
   try {
@@ -76,7 +78,14 @@ const loginverify = async ({ phoneoremail, otp }) => {
           { email: phoneoremail }
         ]
       },
-      attributes: { exclude: ['isActive'] }
+      attributes: { exclude: ['isActive'] },
+      include: [
+        {
+          model: Role,
+          as: 'role',
+          attributes: ['id', 'uuId', 'roleName', ]
+        }
+      ]
     });
 
     if (!user) {
@@ -116,9 +125,38 @@ const loginverify = async ({ phoneoremail, otp }) => {
   }
 };
 
+const dummyData = require('../../utils/helper'); // import dummy data
+
+const dummyPanEntery = async ({ id, pan, dob }) => {
+  try {
+    const user = await User.findOne({ where: { id } });
+
+    if (!user) {
+      throw new Error(ERROR_MESSAGE.USER_NOT_FOUND || "User not found");
+    }
+
+    const randomDummy = dummyData[Math.floor(Math.random() * dummyData.length)];
+
+    // Update user details with dummy data
+    user.firstName = randomDummy.firstName;
+    user.lastName = randomDummy.lastName;
+    user.pan = pan;
+    user.creditScore = randomDummy.creditScore;
+    user.currentBalance = randomDummy.currentBalance;
+    user.address = randomDummy.address;
+
+    await user.save();
+    return user;
+  } catch (error) {
+    throw new Error(error.message || "Failed to process request");
+  }
+};
+
+
 
 module.exports = {
     createUser,
     otpStore,
-    loginverify
+    loginverify,
+    dummyPanEntery,
 };
