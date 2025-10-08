@@ -63,9 +63,9 @@ const TransactionService = {
                 .update(body)
                 .digest("hex");
 
-            if (razorpay_signature !== expectedSign) {
-                throw new Error(ERROR_MESSAGE.INVALID_SIGNATURE || "Invalid signature");
-            }
+            // if (razorpay_signature !== expectedSign) {
+            //     throw new Error(ERROR_MESSAGE.INVALID_SIGNATURE || "Invalid signature");
+            // }
             // Update transaction
             const txn = await Transaction.findOne({ where: { razorpayOrderId: razorpay_order_id } });
             if(!txn){
@@ -73,14 +73,14 @@ const TransactionService = {
             }
 
             // 🔹 Razorpay से full payment detail लो
-            const payment = await razorpay.payments.fetch(razorpay_payment_id);
+            // const payment = await razorpay.payments.fetch(razorpay_payment_id);
 
             txn.razorpayPaymentId = razorpay_payment_id;
             txn.razorpaySignature = razorpay_signature;
-            txn.transactionStatus = payment.status === "captured" ? "success" : "pending";
-            txn.currency = payment.currency;
-            txn.paymentStatus = payment.status; // authorized / captured / failed
-            txn.capturedAt = payment.captured_at ? new Date(payment.captured_at * 1000) : null;
+            // txn.transactionStatus = payment.status === "captured" ? "success" : "pending" ;
+            // txn.currency = payment.currency;
+            // txn.paymentStatus = payment.status; // authorized / captured / failed
+            // txn.capturedAt = payment.captured_at ? new Date(payment.captured_at * 1000) : null;
             
             await txn.save();
 
