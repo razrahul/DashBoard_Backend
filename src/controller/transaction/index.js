@@ -7,7 +7,9 @@ const {
   sendErrorResponse,
 } = require("../../utils/response");
 
+
 const TransactionService = require("../../service/transactionServices");
+const userPlanService = require("../../service/userPlanServices");
 
 const transactionController = {
   transactionCreateOrder: async (req, res) => {
@@ -58,6 +60,12 @@ const transactionController = {
         razorpay_payment_id,
         razorpay_signature,
       });
+      
+     
+     if (result && result.memberId && result.planId) {
+      // Payment verified → Add user plan
+      await userPlanService.createUserPlan(result.memberId, result.planId);
+     }
 
       sendSuccessResponse(
         res,
