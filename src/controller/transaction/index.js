@@ -9,7 +9,7 @@ const {
 
 
 const TransactionService = require("../../service/transactionServices");
-const userPlanService = require("../../service/userPlanServices");
+const userPlanService = require("../../service/userPlanservices/index");
 
 const transactionController = {
   transactionCreateOrder: async (req, res) => {
